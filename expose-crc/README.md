@@ -63,3 +63,9 @@ listen api
 podman run --env-host --net host -ti --rm quay.io/redhat-emea-ssa-team/openshift-4-loadbalancer:latest
 
 ```
+
+
+## Update local /etc/hosts 
+
+
+echo "$PUBLIC_IP api.crc.testing canary-openshift-ingress-canary.apps-crc.testing console-openshift-console.apps-crc.testing default-route-openshift-image-registry.apps-crc.testing downloads-openshift-console.apps-crc.testing oauth-openshift.apps-crc.testing" | sudo tee -a /etc/hosts
