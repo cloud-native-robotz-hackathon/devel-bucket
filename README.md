@@ -44,3 +44,9 @@ Apply ArgoCD Application:
 ```bash
 oc apply -f openshift-local/starter-app..application.yaml
 ```
+
+
+## Open Issues
+
+- [ ] Containerize GoPiGo3
+      https://github.com/cloud-native-robotz-hackathon/edgecontroller/issues/1
