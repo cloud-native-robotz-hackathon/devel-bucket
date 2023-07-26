@@ -42,7 +42,8 @@ https://kubernetes.default.svc  in-cluster            Unknown  Cluster has no ap
 
 Apply ArgoCD Application:
 ```bash
-oc apply -f openshift-local/starter-app..application.yaml
+oc apply -f openshift-local/starter-app.application.yaml
+oc apply -f openshift-local/hubcontroller-rest.application.yaml
 ```
 
 

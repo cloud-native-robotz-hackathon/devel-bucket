@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  MAP: '{"terminator": "10.89.114.152"}'
+immutable: false
+kind: ConfigMap
+metadata:
+  name: robot-mapping-configmap
