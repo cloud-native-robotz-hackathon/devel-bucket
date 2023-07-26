@@ -62,7 +62,7 @@ $
 🚨 Upstream skupper do not provide ARM images!
 
 
-## Deploy skuper in private cluster (CRC/Local/SNO)
+## Deploy skupper in private cluster (CRC/Local/SNO)
 
 ```bash
 $ oc new-project skupper-private
@@ -82,3 +82,51 @@ $ skupper status
 Skupper is enabled for namespace "skupper-private" in interior mode. It is connected to 1 other site. It has no exposed services.
 ```
 
+## Service expose
+
+ - hub controller is deployed on skupper-private (OpenShift Local / SNO )
+
+### Service expose - PRIVATE ( OpenShift Local / SNO )
+
+```bash
+
+$ skupper expose deploymentconfig/hub-controller-live --port 8080
+deploymentconfig hub-controller-live exposed as hub-controller-live
+
+$ oc get svc hub-controller-live -o yaml | grep skupper
+    internal.skupper.io/originalAssignedPort: 8080:1024
+    internal.skupper.io/originalSelector: app=hub-controller-live,group=de.nexussix.openshift.hackathon,provider=fabric8
+    internal.skupper.io/originalTargetPort: 8080:8080
+  namespace: skupper-private
+    application: skupper-router
+    skupper.io/component: router
+```
+
+### Service - PUBLIC
+
+```bash
+$ oc get svc
+NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+hub-controller-live    ClusterIP   172.30.74.88     <none>        8080/TCP                     106s
+[...snipped...]
+```
+
+🤩
+
+Curl the robot
+```bash
+oc run curl --image=registry.access.redhat.com/ubi9-minimal --command -- curl http://hub-controller-live.skupper-public.svc.cluster.local:8080/api/robot/distance?user_key=terminator
+
+oc logs -f curl
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100     3  100     3    0     0      6      0 --:--:-- --:--:-- --:--:--     6
+574
+```
+curl examples:
+```bash
+curl http://hub-controller-live-skupper-private.apps-crc.testing/robot/distance?user_key=terminator
+
+curl -X POST -F 'user_key=terminator' http://hub-controller-live-skupper-private.apps-crc.testing/robot/forward/10
+
+```
