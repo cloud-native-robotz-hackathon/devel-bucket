@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: starterapp-python
+  name: starterapp-python
+spec:
+  port:
+    targetPort: 5002-tcp
+  to:
+    kind: Service
+    name: starterapp-python
+    weight: 100
+  wildcardPolicy: None
