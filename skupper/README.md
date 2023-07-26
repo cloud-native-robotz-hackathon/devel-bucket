@@ -26,7 +26,8 @@ The site console url is:  https://skupper-skupper-public.apps.demo.openshift.pub
 The credentials for internal console-auth mode are held in secret: 'skupper-console-users'
 $ oc get secret skupper-console-users -o jsonpath="{.data.admin}" | base64 -d; echo
 G5xxxxxxx
-$
+$ skupper token create public.token
+Token written to public.token
 ```
 
 ## 📛 Deploy skuper in private cluster (MicroShift)
@@ -61,6 +62,23 @@ $
 🚨 Upstream skupper do not provide ARM images!
 
 
+## Deploy skuper in private cluster (CRC/Local/SNO)
 
+```bash
+$ oc new-project skupper-private
+[...snipped...]
+$ skupper init
+W0726 12:12:19.035967  748022 warnings.go:70] would violate PodSecurity "restricted:v1.24": allowPrivilegeEscalation != false (containers "router", "config-sync" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (containers "router", "config-sync" must set securityContext.capabilities.drop=["ALL"]), seccompProfile (pod or containers "router", "config-sync" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+W0726 12:12:21.010427  748022 warnings.go:70] would violate PodSecurity "restricted:v1.24": allowPrivilegeEscalation != false (container "service-controller" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "service-controller" must set securityContext.capabilities.drop=["ALL"]), seccompProfile (pod or container "service-controller" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+Skupper is now installed in namespace 'skupper-private'.  Use 'skupper status' to get more information.
 
+$ skupper status
+Skupper is enabled for namespace "skupper-private" in interior mode. It is not connected to any other sites. It has no exposed services.
+
+$ skupper link create public.token
+Site configured to link to https://claims-skupper-public.apps.demo.openshift.pub:443/360a6c99-2b9d-11ee-8ac2-701ab8659816 (name=link1)
+Check the status of the link using 'skupper link status'.
+$ skupper status
+Skupper is enabled for namespace "skupper-private" in interior mode. It is connected to 1 other site. It has no exposed services.
+```
 
