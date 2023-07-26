@@ -1,2 +1,1 @@
-# devel-bucket
-Development 🪣
+# Development 🪣
