@@ -14,4 +14,4 @@ spec:
     spec:
       containers:
       - name: starterapp-python
-        image: quay.io/nexus6/starter-app-python:latest
+        image: quay.io/grieger/starter-app-python-archtest:latest
