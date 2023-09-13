@@ -1,7 +1,7 @@
 # Development 🪣
 
 
-![overview.drawio.png](overview.drawio.png)
+![overview.drawio.v2.png](overview.drawio.v2.png)
 
 ## Workshop flow
 
