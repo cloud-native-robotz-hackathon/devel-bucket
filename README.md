@@ -62,7 +62,13 @@ Apply ArgoCD Application:
 oc apply -f openshift-local/starter-app.application.yaml
 oc apply -f openshift-local/hubcontroller-rest.application.yaml
 ```
+## hubcontroller-rest test commands
 
+```bash
+# Forward
+curl -k -X POST  https://test-hubcontroller-rest.apps.edgesno.example.com/api/robot/forward/1?user_key=terminator
+
+```
 
 ## Open Issues
 
