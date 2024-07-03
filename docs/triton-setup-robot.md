@@ -14,6 +14,10 @@ wget -O model_repository/densenet_onnx/1/model.onnx \
      https://contentmamluswest001.blob.core.windows.net/content/14b2744cf8d6418c87ffddc3f3127242/9502630827244d60a1214f250e3bbca7/08aed7327d694b8dbaee2c97b8d0fcba/densenet121-1.2.onnx
 ```
 
+Triton generates a config.pbtxt file if missing with the model, but this didn't work. Create the two file from 
+https://github.com/triton-inference-server/server/blob/main/docs/examples/model_repository/densenet_onnx/
+in `model_repository/densenet_onnx/`
+
 Pull and run the Triton Server container image:
 
 ```
@@ -66,6 +70,22 @@ Run the SDK image in interactive mode:
 ```
 podman run -it --rm --net=host nvcr.io/nvidia/tritonserver:24.06-py3-sdk
 ```
+
+Now inside the running SDK container run the client:
+
+```
+/workspace/install/bin/image_client -m densenet_onnx -c 3 -s INCEPTION /workspace/images/mug.jpg
+Request 0, batch size 1
+Image '/workspace/images/mug.jpg':
+    15.349568 (504) = COFFEE MUG
+    13.227468 (968) = CUP
+    10.424893 (505) = COFFEEPOT
+```
+
+## References
+https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/getting_started/quickstart.html
+https://github.com/triton-inference-server/tutorials#quick-deploy
+https://catalog.ngc.nvidia.com/orgs/nvidia/containers/tritonserver
 
 
 
