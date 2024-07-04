@@ -1,6 +1,6 @@
 # Setup Nvidia Triton Inferencing Server on GoPiGo 3
 ## Walkthrough to get example onnx model to work.
-### Install and start Triton Server
+### Install, Start & Test Triton Server
 
 Create model repository on robot:
 
@@ -81,6 +81,59 @@ Image '/workspace/images/mug.jpg':
     13.227468 (968) = CUP
     10.424893 (505) = COFFEEPOT
 ```
+## Running Robot Hackathon Example ONNX Model
+Create a new subdirectory for the new model and the version directory:
+
+```
+mkdir -p model_repository/robot_hackathon/1/
+```
+
+Copy the model into the repo, it must be called `model.onnx`! The result should look like:
+
+```
+# tree model_repository/
+model_repository/
+├── densenet_onnx
+│   ├── 1
+│   │   └── model.onnx
+│   ├── config.pbtxt
+│   └── densenet_labels.txt
+└── robot_hackathon
+    └── 1
+        └── model.onnx
+```
+
+Start the Triton container, the output should show:
+
+```
++-----------------+---------+--------+
+| Model           | Version | Status |
++-----------------+---------+--------+
+| densenet_onnx   | 1       | READY  |
+| robot_hackathon | 1       | READY  |
++-----------------+---------+--------+
+```
+
+> Triton might pick up a new model automatically, has to be tested. For our model the config.pbtxt config file derived automatically by triton
+> in memory works so far.
+
+Check the model can be accessed:
+
+```
+curl localhost:8000/v2/models/robot_hackathon/versions/1 -v | jq
+```
+
+### Adapt starter-app-python to work with Triton
+Put the following into `config.py`:
+
+```
+ROBOT_API = 'http://localhost:5000'
+API_TOKEN = ''
+INFERENCING_API = 'http://localhost:8000/v2/models/robot_hackathon/infer'
+```
+
+Comment out the inferencing example in `app.py`, if the image aquisition works on the robot you should be able to get
+inferencing results.
 
 ## References
 https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/getting_started/quickstart.html
